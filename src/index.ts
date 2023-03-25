@@ -14,7 +14,6 @@ server.on('request', (req, res) => {
   try {
     const url = parse(req.url!);
     const pathname = url.pathname;
-    console.log(req.headers.referer, pathname);
     if (pathname === '/count') {
       res.statusCode = 200;
       res.setHeader('content-type', 'application/json;charset=utf-8');

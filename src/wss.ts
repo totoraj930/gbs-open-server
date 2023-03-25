@@ -25,11 +25,14 @@ const subscriber: Map<number, Set<WebSocket>> = new Map();
 export function getSubscriberCount() {
   return [...subscriber.entries()]
     .sort((a, b) => a[0] - b[0])
-    .map((item) => {
-      return {
-        id: item[0],
-        count: item[1].size,
-      };
+    .flatMap((item) => {
+      if (item[1].size <= 0) return [];
+      return [
+        {
+          id: item[0],
+          count: item[1].size,
+        },
+      ];
     });
 }
 
@@ -53,6 +56,7 @@ wss.on('connection', (ws, req) => {
   });
   ws.on('close', () => {
     aliveFlag.delete(ws);
+    removeAllFilter(ws);
   });
 
   ws.on('message', (data) => {
@@ -63,9 +67,7 @@ wss.on('connection', (ws, req) => {
         case 'filters': {
           console.log(msg.data);
           // 一旦全ての購読を解除
-          for (const clients of subscriber.values()) {
-            clients.delete(ws);
-          }
+          removeAllFilter(ws);
           for (const id of msg.data) {
             let clients = subscriber.get(id);
             if (!clients) {
@@ -86,6 +88,12 @@ wss.on('connection', (ws, req) => {
     }
   });
 });
+
+function removeAllFilter(ws: WebSocket) {
+  for (const clients of subscriber.values()) {
+    clients.delete(ws);
+  }
+}
 
 export function sendAll(serverMsg: ServerMessage) {
   try {
