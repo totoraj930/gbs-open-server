@@ -80,7 +80,7 @@ async function getAllFilters() {
   const countRecord: Map<number, number> = new Map();
   for (const res of resList) {
     for (const item of res) {
-      const count = (countRecord.get(item.id) ?? 0) + 1;
+      const count = (countRecord.get(item.id) ?? 0) + item.count;
       countRecord.set(item.id, count);
     }
   }
