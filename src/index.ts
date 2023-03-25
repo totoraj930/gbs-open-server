@@ -35,7 +35,6 @@ server.on('request', (req, res) => {
 export async function main() {
   const subRedis = getRaidTweetChClient();
   subRedis.on('tweet', (tweet) => {
-    console.log(tweet);
     sendRaidTweetMini(tweet);
   });
 
