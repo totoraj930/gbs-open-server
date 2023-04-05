@@ -46,7 +46,9 @@ wss.on('connection', (ws, req) => {
 
   sendMessage(ws, {
     type: 'message',
-    message: `server_id: ${env.SERVER_PORT}`,
+    message: `server_id: ${env.SERVER_PORT}, name: ${
+      env.SERVER_NAME ?? 'MAIN'
+    }`,
   });
 
   ws.on('error', () => {});

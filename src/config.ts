@@ -4,6 +4,7 @@ dotenv.config();
 
 const zEnv = z.object({
   SERVER_PORT: z.string(),
+  SERVER_NAME: z.string().optional(),
   MONITOR_PORT: z.string(),
 });
 

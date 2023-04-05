@@ -8,6 +8,7 @@ module.exports = {
       increment_var: 'SERVER_PORT',
       env: {
         SERVER_PORT: 10510,
+        SERVER_NAME: 'SUB',
       },
     },
   ],
