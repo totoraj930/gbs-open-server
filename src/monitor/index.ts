@@ -30,6 +30,19 @@ server.on('request', async (req, res) => {
       res.statusCode = 200;
       res.setHeader('content-type', 'application/json;charset=utf-8');
       return res.end(JSON.stringify(await getAllFilters()));
+    } else if (pathname === '/ranking') {
+      res.statusCode = 200;
+      res.setHeader('content-type', 'application/json;charset=utf-8');
+
+      // 5分キャッシュ
+      const cacheCtl = ['public', 'max-age=300'];
+      res.setHeader('Cloudflare-CDN-Cache-Control', cacheCtl.join(', '));
+      res.setHeader('Cache-Control', 'no-store');
+
+      const ranking = await getAllFilters();
+      ranking.sort((a, b) => b.count - a.count);
+
+      return res.end(JSON.stringify(ranking));
     }
   } catch {}
   res.statusCode = 500;
