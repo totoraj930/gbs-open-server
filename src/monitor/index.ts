@@ -25,7 +25,18 @@ server.on('request', async (req, res) => {
     if (pathname === '/') {
       res.statusCode = 200;
       res.setHeader('content-type', 'application/json;charset=utf-8');
-      return res.end(JSON.stringify(await getAllCount(), null, '  '));
+      const count = await getAllCount();
+      let sum = 0;
+      for (const n of count) {
+        if (n > 0) {
+          sum += n;
+        }
+      }
+      const resObj = {
+        count,
+        sum,
+      };
+      return res.end(JSON.stringify(resObj, null, '  '));
     } else if (pathname === '/filters') {
       res.statusCode = 200;
       res.setHeader('content-type', 'application/json;charset=utf-8');
